@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import firebase from '../firebase.js';
 
 export default class Main extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
-      items: this.props.items,
+      items: [],
     }
     this.addItem = this.addItem.bind(this);
   }
@@ -14,6 +15,7 @@ export default class Main extends Component {
     this.setState({
       items: this.state.items.concat(newItem)
     })
+    firebase.database().ref('items').push(newItem);
   }
 
   addToList(listItem) {
@@ -25,6 +27,27 @@ export default class Main extends Component {
         return item;
       })
     })
+    // console.log('items/' + listItem);
+    firebase.database().ref('items/' + listItem.id).update(listItem);
+  }
+
+  componentDidMount() {
+    firebase.database().ref('items').on('value', (snapshot) => {
+      console.log(snapshot.val());
+      let data = snapshot.val();
+      let items = [];
+
+      for (var item in data) {
+        items.push({
+          id: item,
+          ...data[item]
+        })
+      }
+
+      this.setState({
+        items,
+      })
+    });
   }
 
   render() {
@@ -32,7 +55,7 @@ export default class Main extends Component {
     return (
       <div className="container">
         <NavBar/>
-        <List items={this.props.items}/>
+        <List items={this.state.items}/>
         <AddItem
           onAddItem={(newItem) => this.addItem(newItem)}
         />
@@ -49,7 +72,7 @@ class NavBar extends Component {
   render() {
     return (
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <a className="navbar-brand" href="#">Food App</a>
+        <a className="navbar-brand" href="/">Food App</a>
       </nav>
     );
   }

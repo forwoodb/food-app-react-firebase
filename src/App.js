@@ -6,30 +6,30 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 function App() {
   return (
     <div className="App">
-      <Main items={items}/>
+      <Main/>
     </div>
   );
 }
 
-const items = [
-  {
-    item: 'apples',
-    price: 4.99,
-    priceType: 'Regular',
-    brand: 'Golden Delicious',
-    location: 'Family Fare',
-    servings: 8,
-    onList: false,
-  },
-  {
-    item: 'bananas',
-    price: 0.59,
-    priceType: 'Regular',
-    brand: 'Dole',
-    location: 'Family Fare',
-    servings: 2,
-    onList: true,
-  },
-]
+// const items = [
+//   {
+//     item: 'apples',
+//     price: 4.99,
+//     priceType: 'Regular',
+//     brand: 'Golden Delicious',
+//     location: 'Family Fare',
+//     servings: 8,
+//     onList: false,
+//   },
+//   {
+//     item: 'bananas',
+//     price: 0.59,
+//     priceType: 'Regular',
+//     brand: 'Dole',
+//     location: 'Family Fare',
+//     servings: 2,
+//     onList: true,
+//   },
+// ]
 
 export default App;
