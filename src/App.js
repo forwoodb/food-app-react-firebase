@@ -19,6 +19,7 @@ const items = [
     brand: 'Golden Delicious',
     location: 'Family Fare',
     servings: 8,
+    onList: false,
   },
   {
     item: 'bananas',
@@ -27,6 +28,7 @@ const items = [
     brand: 'Dole',
     location: 'Family Fare',
     servings: 2,
+    onList: true,
   },
 ]
 
