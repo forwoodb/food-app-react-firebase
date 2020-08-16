@@ -192,20 +192,40 @@ class Store extends Component {
   render() {
     const rows = [];
     this.props.items.forEach((item, i) => {
-      rows.push(
-        <StoreItem
-          key={i}
-          item={item.item}
-          price={item.price}
-          priceType={item.priceType}
-          brand={item.brand}
-          location={item.location}
-          servings={item.servings}
-          onList={() => this.props.onList(item)}
-          onDelete={() => this.props.onDelete(item)}
-          onEdit={() => this.props.onEdit(item)}
-        />
-      );
+      if (item.edit) {
+
+        rows.push(
+          <EditStoreItem
+            key={i}
+            id={item.id}
+            item={item.item}
+            price={item.price}
+            priceType={item.priceType}
+            brand={item.brand}
+            location={item.location}
+            servings={item.servings}
+            onList={() => this.props.onList(item)}
+            onDelete={() => this.props.onDelete(item)}
+            onEdit={() => this.props.onEdit(item)}
+          />
+        );
+      } else {
+
+        rows.push(
+          <StoreItem
+            key={i}
+            item={item.item}
+            price={item.price}
+            priceType={item.priceType}
+            brand={item.brand}
+            location={item.location}
+            servings={item.servings}
+            onList={() => this.props.onList(item)}
+            onDelete={() => this.props.onDelete(item)}
+            onEdit={() => this.props.onEdit(item)}
+          />
+        );
+      }
     });
 
     return (
@@ -251,6 +271,7 @@ class EditStoreItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      id: this.props.id,
       item: this.props.item,
       price: this.props.price,
       priceType: this.props.priceType,
@@ -258,19 +279,87 @@ class EditStoreItem extends Component {
       location: this.props.location,
       servings: this.props.servings,
     }
+    this.handleItemChange = this.handleItemChange.bind(this);
+    this.handlePriceChange = this.handlePriceChange.bind(this);
+    this.handlePriceTypeChange = this.handlePriceTypeChange.bind(this);
+    this.handleBrandChange = this.handleBrandChange.bind(this);
+    this.handleLocationChange = this.handleLocationChange.bind(this);
+    this.handleServingsChange = this.handleServingsChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
+
+  handleItemChange(e) {
+    this.setState({
+      item: e.target.value,
+    })
+    console.log(e.target.value);
+  }
+
+  handlePriceChange(e) {
+    this.setState({
+      price: e.target.value,
+    })
+  }
+
+  handlePriceTypeChange(e) {
+    this.setState({
+      priceType: e.target.value,
+    })
+  }
+
+  handleBrandChange(e) {
+    this.setState({
+      brand: e.target.value,
+    })
+  }
+
+  handleLocationChange(e) {
+    this.setState({
+      location: e.target.value,
+    })
+  }
+
+  handleServingsChange(e) {
+    this.setState({
+      servings: e.target.value,
+    })
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    const updateItem = {
+      id: this.props.id,
+      item: e.target.item.value,
+      price: e.target.price.value,
+      priceType: e.target.priceType.value,
+      brand: e.target.brand.value,
+      location: e.target.location.value,
+      servings: e.target.servings.value,
+      edit: false,
+    }
+    firebase.database().ref('items/' + updateItem.id).update(updateItem);
+  }
+
   render() {
     return (
       <tr>
-        <td>{this.props.item}</td>
-        <td>{this.props.price}</td>
-        <td>{this.props.priceType}</td>
-        <td>{this.props.brand}</td>
-        <td>{this.props.location}</td>
-        <td>{this.props.servings}</td>
-        <td><button className="btn btn-success" onClick={this.props.onList}>Add</button></td>
-        <td><button className="btn btn-primary" onClick={this.props.onEdit}>Edit</button></td>
-        <td><button className="btn btn-danger" onClick={this.props.onDelete}>Delete</button></td>
+        <td>
+          <form onSubmit={this.handleSubmit}>
+            <input name="item" value={this.state.item} onChange={this.handleItemChange}/>
+            <input name="price" value={this.state.price} onChange={this.handlePriceChange}/>
+
+                <select name="priceType" value={this.state.priceType} onChange={this.handlePriceTypeChange}>
+                  <option>Regular</option>
+                  <option>Sale</option>
+                  <option>Coupon</option>
+                </select>
+
+            <input name="brand" value={this.state.brand} onChange={this.handleBrandChange}/>
+            <input name="location" value={this.state.location} onChange={this.handleLocationChange}/>
+            <input name="servings" value={this.state.servings} onChange={this.handleServingsChange}/>
+            <button className="btn btn-success">Done</button>
+          </form>
+        </td>
       </tr>
     );
   }
