@@ -8,20 +8,12 @@ export default class Main extends Component {
     this.state = {
       items: [],
     }
-    this.addItem = this.addItem.bind(this);
-  }
-
-  addItem(newItem) {
-    this.setState({
-      items: this.state.items.concat(newItem)
-    })
-    firebase.database().ref('items').push(newItem);
   }
 
   addToList(listItem) {
     this.setState({
       items: this.state.items.map((item) => {
-        if (item.item === listItem.item) {
+        if (item.id === listItem.id) {
           item.onList = !item.onList
         }
         return item;
@@ -50,6 +42,23 @@ export default class Main extends Component {
     });
   }
 
+  deleteItem(delItem) {
+    firebase.database().ref('items/' + delItem.id).remove();
+  }
+
+  editItem(editItem) {
+    this.setState({
+      items: this.state.items.map((item) => {
+        if (item.id === editItem.id) {
+          item.edit = !item.edit
+        }
+        return item;
+      })
+    })
+    // console.log('items/' + editItem);
+    firebase.database().ref('items/' + editItem.id).update(editItem);
+  }
+
   render() {
     console.log(this.state.items);
     return (
@@ -57,11 +66,12 @@ export default class Main extends Component {
         <NavBar/>
         <List items={this.state.items}/>
         <AddItem
-          onAddItem={(newItem) => this.addItem(newItem)}
         />
         <Store
           items={this.state.items}
           onList={(listItem) => this.addToList(listItem)}
+          onDelete={(delItem) => this.deleteItem(delItem)}
+          onEdit={(editItem) => this.editItem(editItem)}
         />
       </div>
     );
@@ -150,8 +160,9 @@ class AddItem extends Component {
       location: e.target.location.value,
       servings: e.target.servings.value,
       onList: false,
+      edit: false,
     }
-    this.props.onAddItem(newItem);
+    firebase.database().ref('items').push(newItem);
   }
 
   render() {
@@ -191,6 +202,8 @@ class Store extends Component {
           location={item.location}
           servings={item.servings}
           onList={() => this.props.onList(item)}
+          onDelete={() => this.props.onDelete(item)}
+          onEdit={() => this.props.onEdit(item)}
         />
       );
     });
@@ -227,8 +240,37 @@ class StoreItem extends Component {
         <td>{this.props.location}</td>
         <td>{this.props.servings}</td>
         <td><button className="btn btn-success" onClick={this.props.onList}>Add</button></td>
-        <td><button className="btn btn-primary">Edit</button></td>
-        <td><button className="btn btn-danger">Delete</button></td>
+        <td><button className="btn btn-primary" onClick={this.props.onEdit}>Edit</button></td>
+        <td><button className="btn btn-danger" onClick={this.props.onDelete}>Delete</button></td>
+      </tr>
+    );
+  }
+}
+
+class EditStoreItem extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      item: this.props.item,
+      price: this.props.price,
+      priceType: this.props.priceType,
+      brand: this.props.brand,
+      location: this.props.location,
+      servings: this.props.servings,
+    }
+  }
+  render() {
+    return (
+      <tr>
+        <td>{this.props.item}</td>
+        <td>{this.props.price}</td>
+        <td>{this.props.priceType}</td>
+        <td>{this.props.brand}</td>
+        <td>{this.props.location}</td>
+        <td>{this.props.servings}</td>
+        <td><button className="btn btn-success" onClick={this.props.onList}>Add</button></td>
+        <td><button className="btn btn-primary" onClick={this.props.onEdit}>Edit</button></td>
+        <td><button className="btn btn-danger" onClick={this.props.onDelete}>Delete</button></td>
       </tr>
     );
   }
