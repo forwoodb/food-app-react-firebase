@@ -171,7 +171,7 @@ class AddItem extends Component {
         <div className="form-group">
           <input name="itemText" placeholder="Item"/>
           <input name="price" placeholder="Price"/>
-          <select name="priceType">
+          <select name="priceType" style={{height: '30px', width: '175px'}}>
             <option>Regular</option>
             <option>Sale</option>
             <option>Coupon</option>
