@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import firebase from '../firebase.js';
+import {BrowserRouter as Router, Route, Link} from 'react-router-dom';
+import EditStoreItem from './EditItem.js'
 
 export default class Main extends Component {
   constructor() {
@@ -25,7 +27,7 @@ export default class Main extends Component {
 
   componentDidMount() {
     firebase.database().ref('items').on('value', (snapshot) => {
-      console.log(snapshot.val());
+      // console.log(snapshot.val());
       let data = snapshot.val();
       let items = [];
 
@@ -60,19 +62,23 @@ export default class Main extends Component {
   }
 
   render() {
-    console.log(this.state.items);
+    // console.log(this.state.items);
     return (
       <div className="container">
         <NavBar/>
-        <List items={this.state.items}/>
-        <AddItem
-        />
-        <Store
-          items={this.state.items}
-          onList={(listItem) => this.addToList(listItem)}
-          onDelete={(delItem) => this.deleteItem(delItem)}
-          onEdit={(editItem) => this.editItem(editItem)}
-        />
+        <Router>
+          <Route exact path={'/'}>
+            <List items={this.state.items}/>
+            <AddItem/>
+            <Store
+              items={this.state.items}
+              onList={(listItem) => this.addToList(listItem)}
+              onDelete={(delItem) => this.deleteItem(delItem)}
+              onEdit={(editItem) => this.editItem(editItem)}
+            />
+          </Route>
+          <Route path='/Edit/:id' exact component={EditStoreItem}/>
+        </Router>
       </div>
     );
   }
@@ -96,6 +102,7 @@ class List extends Component {
         rows.push(
           <ListItem
             key={i}
+            id={item.id}
             item={item.item}
             price={item.price}
             priceType={item.priceType}
@@ -168,19 +175,19 @@ class AddItem extends Component {
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
-        <div className="form-group">
-          <input name="itemText" placeholder="Item"/>
-          <input name="price" placeholder="Price"/>
-          <select name="priceType" style={{height: '30px', width: '175px'}}>
+        <div className="form-row">
+          <input className="form-control" name="itemText" placeholder="Item"/>
+          <input className="form-control" name="price" placeholder="Price"/>
+          <select className="form-control" name="priceType">
             <option>Regular</option>
             <option>Sale</option>
             <option>Coupon</option>
           </select>
         </div>
-        <div className="form-group">
-          <input name="brand" placeholder="Brand"/>
-          <input name="location" placeholder="Location"/>
-          <input name="servings" placeholder="Serving"/>
+        <div className="form-row">
+          <input className="form-control" name="brand" placeholder="Brand"/>
+          <input className="form-control" name="location" placeholder="Location"/>
+          <input className="form-control" name="servings" placeholder="Serving"/>
         </div>
           <button className="btn btn-success">Add To Store</button>
       </form>
@@ -192,41 +199,22 @@ class Store extends Component {
   render() {
     const rows = [];
     this.props.items.forEach((item, i) => {
-      if (item.edit) {
-
-        rows.push(
-          <EditStoreItem
-            key={i}
-            id={item.id}
-            item={item.item}
-            price={item.price}
-            priceType={item.priceType}
-            brand={item.brand}
-            location={item.location}
-            servings={item.servings}
-            onList={() => this.props.onList(item)}
-            onDelete={() => this.props.onDelete(item)}
-            onEdit={() => this.props.onEdit(item)}
-          />
-        );
-      } else {
-
-        rows.push(
-          <StoreItem
-            key={i}
-            item={item.item}
-            price={item.price}
-            priceType={item.priceType}
-            brand={item.brand}
-            location={item.location}
-            servings={item.servings}
-            onList={() => this.props.onList(item)}
-            onDelete={() => this.props.onDelete(item)}
-            onEdit={() => this.props.onEdit(item)}
-          />
-        );
-      }
-    });
+      rows.push(
+        <StoreItem
+          key={i}
+          id={item.id}
+          item={item.item}
+          price={item.price}
+          priceType={item.priceType}
+          brand={item.brand}
+          location={item.location}
+          servings={item.servings}
+          onList={() => this.props.onList(item)}
+          onDelete={() => this.props.onDelete(item)}
+          onEdit={() => this.props.onEdit(item)}
+        />
+      );
+  });
 
     return (
       <div>
@@ -259,106 +247,22 @@ class StoreItem extends Component {
         <td>{this.props.brand}</td>
         <td>{this.props.location}</td>
         <td>{this.props.servings}</td>
-        <td><button className="btn btn-success" onClick={this.props.onList}>Add</button></td>
-        <td><button className="btn btn-primary" onClick={this.props.onEdit}>Edit</button></td>
-        <td><button className="btn btn-danger" onClick={this.props.onDelete}>Delete</button></td>
-      </tr>
-    );
-  }
-}
-
-class EditStoreItem extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      id: this.props.id,
-      item: this.props.item,
-      price: this.props.price,
-      priceType: this.props.priceType,
-      brand: this.props.brand,
-      location: this.props.location,
-      servings: this.props.servings,
-    }
-    this.handleItemChange = this.handleItemChange.bind(this);
-    this.handlePriceChange = this.handlePriceChange.bind(this);
-    this.handlePriceTypeChange = this.handlePriceTypeChange.bind(this);
-    this.handleBrandChange = this.handleBrandChange.bind(this);
-    this.handleLocationChange = this.handleLocationChange.bind(this);
-    this.handleServingsChange = this.handleServingsChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  handleItemChange(e) {
-    this.setState({
-      item: e.target.value,
-    })
-    console.log(e.target.value);
-  }
-
-  handlePriceChange(e) {
-    this.setState({
-      price: e.target.value,
-    })
-  }
-
-  handlePriceTypeChange(e) {
-    this.setState({
-      priceType: e.target.value,
-    })
-  }
-
-  handleBrandChange(e) {
-    this.setState({
-      brand: e.target.value,
-    })
-  }
-
-  handleLocationChange(e) {
-    this.setState({
-      location: e.target.value,
-    })
-  }
-
-  handleServingsChange(e) {
-    this.setState({
-      servings: e.target.value,
-    })
-  }
-
-  handleSubmit(e) {
-    e.preventDefault();
-    const updateItem = {
-      id: this.props.id,
-      item: e.target.item.value,
-      price: e.target.price.value,
-      priceType: e.target.priceType.value,
-      brand: e.target.brand.value,
-      location: e.target.location.value,
-      servings: e.target.servings.value,
-      edit: false,
-    }
-    firebase.database().ref('items/' + updateItem.id).update(updateItem);
-  }
-
-  render() {
-    return (
-      <tr>
         <td>
-          <form onSubmit={this.handleSubmit}>
-            <input name="item" value={this.state.item} onChange={this.handleItemChange}/>
-            <input name="price" value={this.state.price} onChange={this.handlePriceChange}/>
-
-                <select name="priceType" value={this.state.priceType} onChange={this.handlePriceTypeChange}>
-                  <option>Regular</option>
-                  <option>Sale</option>
-                  <option>Coupon</option>
-                </select>
-
-            <input name="brand" value={this.state.brand} onChange={this.handleBrandChange}/>
-            <input name="location" value={this.state.location} onChange={this.handleLocationChange}/>
-            <input name="servings" value={this.state.servings} onChange={this.handleServingsChange}/>
-            <button className="btn btn-success">Done</button>
-          </form>
+          <button className="btn btn-success" onClick={this.props.onList}>
+            Add
+          </button>
+        </td>
+        <td>
+          <Link to={'/Edit/' + this.props.id}>
+          <button type="button" className="btn btn-primary">
+            Edit
+          </button>
+          </Link>
+        </td>
+        <td>
+          <button className="btn btn-danger" onClick={this.props.onDelete}>
+            Delete
+          </button>
         </td>
       </tr>
     );
