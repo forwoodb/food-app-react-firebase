@@ -2,7 +2,10 @@ import React, {Component} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import firebase from '../firebase.js';
 import {BrowserRouter as Router, Route, Link} from 'react-router-dom';
-import EditStoreItem from './EditItem.js'
+
+import EditStoreItem from './EditItem.js';
+import NavBar from './NavBar.js';
+import AddItem from './AddItem.js';
 
 export default class Main extends Component {
   constructor() {
@@ -65,17 +68,22 @@ export default class Main extends Component {
     // console.log(this.state.items);
     return (
       <div className="container">
-        <NavBar/>
         <Router>
+          <NavBar/>
           <Route exact path={'/'}>
-            <List items={this.state.items}/>
-            <AddItem/>
+            <List
+              items={this.state.items}
+              onDelete={(delItem) => this.deleteItem(delItem)}
+            />
             <Store
               items={this.state.items}
               onList={(listItem) => this.addToList(listItem)}
               onDelete={(delItem) => this.deleteItem(delItem)}
               onEdit={(editItem) => this.editItem(editItem)}
             />
+          </Route>
+          <Route path={'/AddItem'}>
+            <AddItem/>
           </Route>
           <Route path='/Edit/:id' exact component={EditStoreItem}/>
         </Router>
@@ -84,15 +92,7 @@ export default class Main extends Component {
   }
 }
 
-class NavBar extends Component {
-  render() {
-    return (
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <a className="navbar-brand" href="/">Food App</a>
-      </nav>
-    );
-  }
-}
+
 
 class List extends Component {
   render() {
@@ -109,6 +109,7 @@ class List extends Component {
             brand={item.brand}
             location={item.location}
             servings={item.servings}
+            onDelete={() => this.props.onDelete(item)}
           />
         );
       }
@@ -145,64 +146,12 @@ class ListItem extends Component {
         <td>{this.props.brand}</td>
         <td>{this.props.location}</td>
         <td>{this.props.servings}</td>
-        <td><button className="btn btn-danger">Delete</button></td>
+        <td>
+          <button className="btn btn-danger" onClick={this.props.onDelete}>
+            Delete
+          </button>
+        </td>
       </tr>
-    );
-  }
-}
-
-class AddItem extends Component {
-  constructor() {
-    super();
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  handleSubmit(e) {
-    e.preventDefault();
-    const newItem = {
-      item: e.target.itemText.value,
-      price: e.target.price.value,
-      priceType: e.target.priceType.value,
-      brand: e.target.brand.value,
-      location: e.target.location.value,
-      servings: e.target.servings.value,
-      onList: false,
-      edit: false,
-    }
-    firebase.database().ref('items').push(newItem);
-  }
-
-  render() {
-    return (
-      <form onSubmit={this.handleSubmit}>
-        <div className="form-row">
-          <div className="form-group col">
-            <input className="form-control" name="itemText" placeholder="Item"/>
-          </div>
-          <div className="form-group col">
-            <input className="form-control" name="price" placeholder="Price"/>
-          </div>
-          <div className="form-group col">
-            <select className="form-control" name="priceType">
-              <option>Regular</option>
-              <option>Sale</option>
-              <option>Coupon</option>
-            </select>
-          </div>
-        </div>
-        <div className="form-row">
-          <div className="form-group col">
-            <input className="form-control" name="brand" placeholder="Brand"/>
-          </div>
-          <div className="form-group col">
-            <input className="form-control" name="location" placeholder="Location"/>
-          </div>
-          <div className="form-group col">
-            <input className="form-control" name="servings" placeholder="Serving"/>
-          </div>
-        </div>
-        <button className="btn btn-success">Add To Store</button>
-      </form>
     );
   }
 }
