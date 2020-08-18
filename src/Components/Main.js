@@ -73,7 +73,7 @@ export default class Main extends Component {
           <Route exact path={'/'}>
             <List
               items={this.state.items}
-              onDelete={(delItem) => this.deleteItem(delItem)}
+              onList={(listItem) => this.addToList(listItem)}
             />
             <Store
               items={this.state.items}
@@ -109,7 +109,7 @@ class List extends Component {
             brand={item.brand}
             location={item.location}
             servings={item.servings}
-            onDelete={() => this.props.onDelete(item)}
+            onList={() => this.props.onList(item)}
           />
         );
       }
@@ -146,11 +146,7 @@ class ListItem extends Component {
         <td>{this.props.brand}</td>
         <td>{this.props.location}</td>
         <td>{this.props.servings}</td>
-        <td>
-          <button className="btn btn-danger" onClick={this.props.onDelete}>
-            Delete
-          </button>
-        </td>
+        <td><button className="btn btn-danger" onClick={this.props.onList}>Delete</button></td>
       </tr>
     );
   }
