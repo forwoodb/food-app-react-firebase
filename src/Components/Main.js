@@ -176,20 +176,32 @@ class AddItem extends Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <div className="form-row">
-          <input className="form-control" name="itemText" placeholder="Item"/>
-          <input className="form-control" name="price" placeholder="Price"/>
-          <select className="form-control" name="priceType">
-            <option>Regular</option>
-            <option>Sale</option>
-            <option>Coupon</option>
-          </select>
+          <div className="form-group col">
+            <input className="form-control" name="itemText" placeholder="Item"/>
+          </div>
+          <div className="form-group col">
+            <input className="form-control" name="price" placeholder="Price"/>
+          </div>
+          <div className="form-group col">
+            <select className="form-control" name="priceType">
+              <option>Regular</option>
+              <option>Sale</option>
+              <option>Coupon</option>
+            </select>
+          </div>
         </div>
         <div className="form-row">
-          <input className="form-control" name="brand" placeholder="Brand"/>
-          <input className="form-control" name="location" placeholder="Location"/>
-          <input className="form-control" name="servings" placeholder="Serving"/>
+          <div className="form-group col">
+            <input className="form-control" name="brand" placeholder="Brand"/>
+          </div>
+          <div className="form-group col">
+            <input className="form-control" name="location" placeholder="Location"/>
+          </div>
+          <div className="form-group col">
+            <input className="form-control" name="servings" placeholder="Serving"/>
+          </div>
         </div>
-          <button className="btn btn-success">Add To Store</button>
+        <button className="btn btn-success">Add To Store</button>
       </form>
     );
   }
