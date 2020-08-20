@@ -1,35 +1,58 @@
-import React from 'react';
+import React, {Component} from 'react';
 import './App.css';
 import Main from './Components/Main.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {auth, provider} from './firebase.js';
 
-function App() {
-  return (
-    <div className="App">
-      <Main/>
-    </div>
-  );
+class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      user: null,
+    }
+    this.login = this.login.bind(this);
+    this.logout = this.logout.bind(this);
+  }
+
+  componentDidMount() {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        this.setState({
+          user: user.uid,
+        });
+      }
+    });
+  }
+
+  login() {
+    auth.signInWithPopup(provider)
+      .then((result) => {
+        const user = result.user;
+        this.setState({
+          user: user.uid,
+        });
+      });
+  }
+
+  logout() {
+    auth.signOut().then(() => {
+      this.setState({
+        user: null,
+      })
+    })
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <Main
+          user={this.state.user}
+          login={this.login}
+          logout={this.logout}
+        />
+      </div>
+    );
+  }
 }
-
-// const items = [
-//   {
-//     item: 'apples',
-//     price: 4.99,
-//     priceType: 'Regular',
-//     brand: 'Golden Delicious',
-//     location: 'Family Fare',
-//     servings: 8,
-//     onList: false,
-//   },
-//   {
-//     item: 'bananas',
-//     price: 0.59,
-//     priceType: 'Regular',
-//     brand: 'Dole',
-//     location: 'Family Fare',
-//     servings: 2,
-//     onList: true,
-//   },
-// ]
 
 export default App;

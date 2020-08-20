@@ -13,6 +13,14 @@ export default class NavBar extends Component {
           <li className="nav-item">
             <Link className="nav-link" to={'/AddItem'}>Add Item</Link>
           </li>
+          <li>
+            {
+              this.props.user ?
+              <button onClick={this.props.logout} className="btn">Log Out</button>
+              : 
+              <button onClick={this.props.login} className="btn">Log In</button>
+            }
+          </li>
         </ul>
       </nav>
     );

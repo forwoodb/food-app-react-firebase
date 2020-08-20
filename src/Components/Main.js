@@ -24,21 +24,28 @@ export default class Main extends Component {
         return item;
       })
     })
-    // console.log('items/' + listItem);
     firebase.database().ref('items/' + listItem.id).update(listItem);
   }
 
   componentDidMount() {
     firebase.database().ref('items').on('value', (snapshot) => {
-      // console.log(snapshot.val());
       let data = snapshot.val();
       let items = [];
+      let user;
+
+      if (this.props.user) {
+        user = this.props.user;
+      } else {
+        user = 'Demo';
+      }
 
       for (var item in data) {
-        items.push({
-          id: item,
-          ...data[item]
-        })
+        if (data[item].user === user) {
+          items.push({
+            id: item,
+            ...data[item]
+          })
+        }
       }
 
       this.setState({
@@ -60,22 +67,27 @@ export default class Main extends Component {
         return item;
       })
     })
-    // console.log('items/' + editItem);
     firebase.database().ref('items/' + editItem.id).update(editItem);
   }
 
   render() {
-    // console.log(this.state.items);
     return (
       <div className="container">
         <Router>
-          <NavBar/>
+          <NavBar
+            user={this.props.user}
+            login={this.props.login}
+            logout={this.props.logout}
+          />
           <Route exact path={'/'}>
             <List
+              user={this.props.user}
               items={this.state.items}
               onList={(listItem) => this.addToList(listItem)}
             />
+            <AddItem user={this.props.user}/>
             <Store
+              user={this.props.user}
               items={this.state.items}
               onList={(listItem) => this.addToList(listItem)}
               onDelete={(delItem) => this.deleteItem(delItem)}
@@ -83,7 +95,6 @@ export default class Main extends Component {
             />
           </Route>
           <Route path={'/AddItem'}>
-            <AddItem/>
           </Route>
           <Route path='/Edit/:id' exact component={EditStoreItem}/>
         </Router>

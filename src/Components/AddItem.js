@@ -10,6 +10,7 @@ export default class AddItem extends Component {
   handleSubmit(e) {
     e.preventDefault();
     const newItem = {
+      user: this.props.user ? this.props.user : 'Demo',
       item: e.target.itemText.value,
       price: e.target.price.value,
       priceType: e.target.priceType.value,
@@ -20,11 +21,12 @@ export default class AddItem extends Component {
       edit: false,
     }
     firebase.database().ref('items').push(newItem);
+    // window.location = '/';
   }
 
   render() {
     return (
-      <div>
+      <div className="mt-3 mb-3">
         <h1>Add Item</h1>
         <form onSubmit={this.handleSubmit}>
           <div className="form-row">
