@@ -26,7 +26,7 @@ export default class AddItem extends Component {
 
   render() {
     return (
-      <div className="mt-3 mb-3">
+      <div className="mt-5 mb-5">
         <h1>Add Item</h1>
         <form onSubmit={this.handleSubmit}>
           <div className="form-row">
@@ -52,7 +52,7 @@ export default class AddItem extends Component {
               <input className="form-control" name="location" placeholder="Location"/>
             </div>
             <div className="form-group col">
-              <input className="form-control" name="servings" placeholder="Serving"/>
+              <input className="form-control" name="servings" placeholder="Servings"/>
             </div>
           </div>
           <button className="btn btn-success">Add To Store</button>
