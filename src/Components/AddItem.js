@@ -21,6 +21,12 @@ export default class AddItem extends Component {
       edit: false,
     }
     firebase.database().ref('items').push(newItem);
+
+    e.target.elements.itemText.value = '';
+    e.target.elements.price.value = '';
+    e.target.elements.brand.value = '';
+    e.target.elements.location.value = '';
+    e.target.elements.servings.value = '';
     // window.location = '/';
   }
 
