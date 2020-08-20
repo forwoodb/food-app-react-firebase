@@ -1,12 +1,10 @@
 import React, {Component} from 'react';
 import firebase from '../firebase.js';
-import {Link} from 'react-router-dom';
 
 export default class EditStoreItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: '',
       item: '',
       price: '',
       priceType: '',
@@ -27,7 +25,6 @@ export default class EditStoreItem extends Component {
     firebase.database().ref('items/' + this.props.match.params.id).on('value', (snapshot) => {
       const data = snapshot.val();
       this.setState({
-        id: data.id,
         item: data.item,
         price: data.price,
         priceType: data.priceType,
@@ -78,7 +75,6 @@ export default class EditStoreItem extends Component {
   handleSubmit(e) {
     e.preventDefault();
     const updateItem = {
-      id: this.props.id,
       item: e.target.item.value,
       price: e.target.price.value,
       priceType: e.target.priceType.value,
@@ -87,7 +83,8 @@ export default class EditStoreItem extends Component {
       servings: e.target.servings.value,
       edit: false,
     }
-    firebase.database().ref('items/' + updateItem.id).update(updateItem);
+    firebase.database().ref('items/' + this.props.match.params.id).update(updateItem);
+    window.location ='/';
   }
 
   render() {
@@ -163,9 +160,7 @@ export default class EditStoreItem extends Component {
             />
           </div>
         </div>
-        <Link to={'/'}>
-          <button className="btn btn-success">Done</button>
-        </Link>
+        <button className="btn btn-success">Done</button>
       </form>
     );
   }
