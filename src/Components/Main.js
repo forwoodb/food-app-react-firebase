@@ -165,24 +165,15 @@ class ListItem extends Component {
 
 class Store extends Component {
   render() {
-    const rows = [];
-    this.props.items.forEach((item, i) => {
-      rows.push(
-        <StoreItem
-          key={i}
-          id={item.id}
-          item={item.item}
-          price={item.price}
-          priceType={item.priceType}
-          brand={item.brand}
-          location={item.location}
-          servings={item.servings}
-          onList={() => this.props.onList(item)}
-          onDelete={() => this.props.onDelete(item)}
-          onEdit={() => this.props.onEdit(item)}
-        />
-      );
-  });
+    function compare(a,b) {
+      let comparison = 0;
+      if (a.item > b.item) {
+        comparison = 1;
+      } else if (a.item < b.item) {
+        comparison = -1;
+      }
+      return comparison;
+    }
 
     return (
       <div>
@@ -198,7 +189,25 @@ class Store extends Component {
               <th>Servings</th>
             </tr>
           </thead>
-          <tbody>{rows}</tbody>
+          <tbody>
+            {
+              this.props.items.sort(compare).map((item) =>
+                <StoreItem
+                  key={item.id}
+                  id={item.id}
+                  item={item.item}
+                  price={item.price}
+                  priceType={item.priceType}
+                  brand={item.brand}
+                  location={item.location}
+                  servings={item.servings}
+                  onList={() => this.props.onList(item)}
+                  onDelete={() => this.props.onDelete(item)}
+                  onEdit={() => this.props.onEdit(item)}
+                />
+              )
+            }
+          </tbody>
         </table>
       </div>
     );
