@@ -134,10 +134,7 @@ class List extends Component {
             <tr>
               <th>Item</th>
               <th>Price</th>
-              <th>Price Type</th>
               <th>Brand</th>
-              <th>Location</th>
-              <th>Servings</th>
             </tr>
           </thead>
           <tbody>{rows}</tbody>
@@ -153,10 +150,7 @@ class ListItem extends Component {
       <tr>
         <td>{this.props.item}</td>
         <td>{this.props.price}</td>
-        <td>{this.props.priceType}</td>
         <td>{this.props.brand}</td>
-        <td>{this.props.location}</td>
-        <td>{this.props.servings}</td>
         <td><button className="btn btn-danger" onClick={this.props.onList}>Delete</button></td>
       </tr>
     );
@@ -178,37 +172,23 @@ class Store extends Component {
     return (
       <div>
         <h1>Store</h1>
-        <table className="table table-striped table-hover">
-          <thead>
-            <tr>
-              <th>Item</th>
-              <th>Price</th>
-              <th>Price Type</th>
-              <th>Brand</th>
-              <th>Location</th>
-              <th>Servings</th>
-            </tr>
-          </thead>
-          <tbody>
-            {
-              this.props.items.sort(compare).map((item) =>
-                <StoreItem
-                  key={item.id}
-                  id={item.id}
-                  item={item.item}
-                  price={item.price}
-                  priceType={item.priceType}
-                  brand={item.brand}
-                  location={item.location}
-                  servings={item.servings}
-                  onList={() => this.props.onList(item)}
-                  onDelete={() => this.props.onDelete(item)}
-                  onEdit={() => this.props.onEdit(item)}
-                />
-              )
-            }
-          </tbody>
-        </table>
+          {
+            this.props.items.sort(compare).map((item) =>
+              <StoreItem
+                key={item.id}
+                id={item.id}
+                item={item.item}
+                price={item.price}
+                priceType={item.priceType}
+                brand={item.brand}
+                location={item.location}
+                servings={item.servings}
+                onList={() => this.props.onList(item)}
+                onDelete={() => this.props.onDelete(item)}
+                onEdit={() => this.props.onEdit(item)}
+              />
+            )
+          }
       </div>
     );
   }
@@ -217,31 +197,52 @@ class Store extends Component {
 class StoreItem extends Component {
   render() {
     return (
-      <tr>
-        <td>{this.props.item}</td>
-        <td>{this.props.price}</td>
-        <td>{this.props.priceType}</td>
-        <td>{this.props.brand}</td>
-        <td>{this.props.location}</td>
-        <td>{this.props.servings}</td>
-        <td>
-          <button className="btn btn-success" onClick={this.props.onList}>
-            Add
-          </button>
-        </td>
-        <td>
-          <Link to={'/Edit/' + this.props.id}>
-          <button type="button" className="btn btn-primary">
-            Edit
-          </button>
-          </Link>
-        </td>
-        <td>
-          <button className="btn btn-danger" onClick={this.props.onDelete}>
-            Delete
-          </button>
-        </td>
-      </tr>
+      <div className="card text-center" key={this.props.id}>
+        <div className="card-body">
+          <h4 className="card-title">{this.props.item}</h4>
+          <table className="table">
+            <tbody>
+              <tr>
+                <td className="text-right">Price:</td>
+                <td className="text-left">{this.props.price}</td>
+                <td className="text-right">Location:</td>
+                <td className="text-left">{this.props.location}</td>
+              </tr>
+              <tr>
+                <td className="text-right">Price Type:</td>
+                <td className="text-left">{this.props.priceType}</td>
+                <td className="text-right">Servings:</td>
+                <td className="text-left">{this.props.servings}</td>
+              </tr>
+              <tr>
+                <td className="text-right">Brand:</td>
+                <td className="text-left">{this.props.brand}</td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+          <div className="row">
+            <div className="col text-left">
+              <button className="btn btn-success" onClick={this.props.onList}>
+                Add to List
+              </button>
+            </div>
+            <div className="col text-center">
+              <Link to={'/Edit/' + this.props.id}>
+              <button type="button" className="btn btn-primary">
+                Edit Item
+              </button>
+              </Link>
+            </div>
+            <div className="col text-right">
+              <button className="btn btn-danger" onClick={this.props.onDelete}>
+                Delete Item
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     );
   }
 }
