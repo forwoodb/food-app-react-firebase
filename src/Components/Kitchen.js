@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import {BrowserRouter as Router, Route, Link} from 'react-router-dom';
 
-export default class Store extends Component {
+
+
+export default class Kitchen extends Component {
   render() {
     function compare(a,b) {
       let comparison = 0;
@@ -15,10 +17,10 @@ export default class Store extends Component {
 
     return (
       <div>
-        <h1>Store</h1>
+        <h1>Kitchen</h1>
           {
             this.props.items.sort(compare).map((item) =>
-              <StoreItem
+              <KitchenItem
                 key={item.id}
                 id={item.id}
                 item={item.item}
@@ -38,7 +40,7 @@ export default class Store extends Component {
   }
 }
 
-function StoreItem(props) {
+function KitchenItem(props) {
 
     return (
       <div className="card text-center" key={props.id}>
@@ -69,7 +71,7 @@ function StoreItem(props) {
           <div className="row">
             <div className="col text-left">
               <button className="btn btn-success" onClick={props.onList}>
-                Add to List
+                Add 1 Serving to Meal
               </button>
             </div>
             <div className="col text-center">

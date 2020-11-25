@@ -13,7 +13,7 @@ export default class NavBar extends Component {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
             <Link className="nav-link" to={'/'}>Store</Link>
-            <Link className="nav-link" to={'/AddItem'}>Kitchen</Link>
+            <Link className="nav-link" to={'/Kitchen'}>Kitchen</Link>
             {
               this.props.user ?
               <button onClick={this.props.logout} className="btn">Log Out</button>
