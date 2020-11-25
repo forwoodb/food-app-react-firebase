@@ -1,15 +1,22 @@
 import React, {Component} from 'react';
-import {BrowserRouter as Router, Route, Link} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 
 
 
 export default class Kitchen extends Component {
+  constructor() {
+    super();
+    this.state = {
+      kitchenItems: [],
+    }
+  }
+
   render() {
     function compare(a,b) {
       let comparison = 0;
-      if (a.item > b.item) {
+      if (a.kitchenItem > b.kitchenItem) {
         comparison = 1;
-      } else if (a.item < b.item) {
+      } else if (a.kitchenItem < b.kitchenItem) {
         comparison = -1;
       }
       return comparison;
@@ -19,11 +26,11 @@ export default class Kitchen extends Component {
       <div>
         <h1>Kitchen</h1>
           {
-            this.props.items.sort(compare).map((item) =>
+            this.state.kitchenItems.sort(compare).map((item) =>
               <KitchenItem
                 key={item.id}
                 id={item.id}
-                item={item.item}
+                item={item.kitchenItem}
                 price={item.price}
                 priceType={item.priceType}
                 brand={item.brand}

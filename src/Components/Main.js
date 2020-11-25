@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import firebase from '../firebase.js';
-import {BrowserRouter as Router, Route, Link} from 'react-router-dom';
+import {BrowserRouter as Router, Route} from 'react-router-dom';
 
 import EditStoreItem from './EditItem.js';
 import NavBar from './NavBar.js';
@@ -46,7 +46,6 @@ export default class Main extends Component {
   componentDidMount() {
     firebase.database().ref('items').on('value', (snapshot) => {
       let data = snapshot.val();
-      console.log(data);
       let items = [];
       let user;
 
