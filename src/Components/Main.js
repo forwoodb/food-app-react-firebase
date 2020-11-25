@@ -30,6 +30,7 @@ export default class Main extends Component {
   componentDidMount() {
     firebase.database().ref('items').on('value', (snapshot) => {
       let data = snapshot.val();
+      console.log(data);
       let items = [];
       let user;
 
@@ -203,20 +204,20 @@ class StoreItem extends Component {
           <table className="table">
             <tbody>
               <tr>
-                <td className="text-right">Price:</td>
-                <td className="text-left">{this.props.price}</td>
-                <td className="text-right">Location:</td>
-                <td className="text-left">{this.props.location}</td>
-              </tr>
-              <tr>
-                <td className="text-right">Price Type:</td>
-                <td className="text-left">{this.props.priceType}</td>
-                <td className="text-right">Servings:</td>
-                <td className="text-left">{this.props.servings}</td>
-              </tr>
-              <tr>
                 <td className="text-right">Brand:</td>
                 <td className="text-left">{this.props.brand}</td>
+                <td className="text-right">Price:</td>
+                <td className="text-left">{this.props.price}</td>
+              </tr>
+              <tr>
+                <td className="text-right">Location:</td>
+                <td className="text-left">{this.props.location}</td>
+                <td className="text-right">Price Type:</td>
+                <td className="text-left">{this.props.priceType}</td>
+              </tr>
+              <tr>
+                <td className="text-right">Servings:</td>
+                <td className="text-left">{this.props.servings}</td>
                 <td></td>
                 <td></td>
               </tr>
