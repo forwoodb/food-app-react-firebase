@@ -22,7 +22,7 @@ export default class List extends Component {
     });
 
     return (
-      <div className="sticky-top bg-white">
+      <div>
         <h1>List</h1>
         <table className="table table-striped table-hover">
           <thead>

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import './App.css';
+// import './App.css';
 import Main from './Components/Main.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {auth, provider} from './firebase.js';
