@@ -2,6 +2,13 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 
 export default class Store extends Component {
+  constructor() {
+    super();
+    this.state = {
+      storeItems: [],
+    }
+  }
+
   render() {
     function compare(a,b) {
       let comparison = 0;

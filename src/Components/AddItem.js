@@ -34,34 +34,32 @@ export default class AddItem extends Component {
     return (
       <div className="mt-5 mb-5">
         <h1>Add Item</h1>
-        <form onSubmit={this.handleSubmit}>
-          <div className="form-row">
-            <div className="form-group col">
-              <input className="form-control" name="itemText" placeholder="Item"/>
-            </div>
-            <div className="form-group col">
-              <input className="form-control" name="price" placeholder="Price"/>
-            </div>
-            <div className="form-group col">
-              <select className="form-control" name="priceType">
-                <option>Regular</option>
-                <option>Sale</option>
-                <option>Coupon</option>
-              </select>
-            </div>
+        <form className="row g-3" onSubmit={this.handleSubmit}>
+          <div>
+            <input className="form-control" name="itemText" placeholder="Item"/>
           </div>
-          <div className="form-row">
-            <div className="form-group col">
-              <input className="form-control" name="brand" placeholder="Brand"/>
-            </div>
-            <div className="form-group col">
-              <input className="form-control" name="location" placeholder="Location"/>
-            </div>
-            <div className="form-group col">
-              <input className="form-control" name="servings" placeholder="Servings"/>
-            </div>
+          <div className="col-md-6">
+            <input className="form-control" name="price" placeholder="Price"/>
           </div>
-          <button className="btn btn-success">Add To Store</button>
+          <div className="col-md-6">
+            <select className="form-control" name="priceType">
+              <option>Regular</option>
+              <option>Sale</option>
+              <option>Coupon</option>
+            </select>
+          </div>
+          <div className="col-md-4">
+            <input className="form-control" name="brand" placeholder="Brand"/>
+          </div>
+          <div className="col-md-4">
+            <input className="form-control" name="servings" placeholder="Servings"/>
+          </div>
+          <div className="col-md-4">
+            <input className="form-control" name="location" placeholder="Location"/>
+          </div>
+          <div className="d-grid d-sm-block">
+            <button className="btn btn-success">Add To Store</button>
+          </div>
         </form>
       </div>
     );

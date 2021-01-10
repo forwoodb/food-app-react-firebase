@@ -16,7 +16,22 @@ export default class Main extends Component {
     super();
     this.state = {
       items: [],
+      list: [],
+      kitchen: [],
+      meal: [],
     }
+  }
+
+  addToList(listItem) {
+    this.setState({
+      items: this.state.items.map((item) => {
+        if (item.id === listItem.id) {
+          item.onList = !item.onList
+        }
+        return item;
+      })
+    })
+    firebase.database().ref('items/' + listItem.id).update(listItem);
   }
 
   addToList(listItem) {
