@@ -38,23 +38,23 @@ export default class AddItem extends Component {
           <div>
             <input className="form-control" name="itemText" placeholder="Item"/>
           </div>
-          <div className="col-md-6">
+          <div className="col-4">
             <input className="form-control" name="price" placeholder="Price"/>
           </div>
-          <div className="col-md-6">
+          <div className="col-4">
             <select className="form-control" name="priceType">
               <option>Regular</option>
               <option>Sale</option>
               <option>Coupon</option>
             </select>
           </div>
-          <div className="col-md-4">
-            <input className="form-control" name="brand" placeholder="Brand"/>
-          </div>
-          <div className="col-md-4">
+          <div className="col-4">
             <input className="form-control" name="servings" placeholder="Servings"/>
           </div>
-          <div className="col-md-4">
+          <div className="col-6">
+            <input className="form-control" name="brand" placeholder="Brand"/>
+          </div>
+          <div className="col-6">
             <input className="form-control" name="location" placeholder="Location"/>
           </div>
           <div className="d-grid d-sm-block">
