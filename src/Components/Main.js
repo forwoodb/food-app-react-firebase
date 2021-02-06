@@ -10,52 +10,26 @@ import List from './List.js';
 import Store from './Store.js';
 import Meal from './Meal.js';
 import Kitchen from './Kitchen.js';
+import Test from './Test.js';
 
 export default class Main extends Component {
   constructor() {
     super();
     this.state = {
       items: [],
-      list: [],
-      kitchen: [],
-      meal: [],
     }
   }
 
-  addToList(listItem) {
+  addToList(storeItem) {
     this.setState({
       items: this.state.items.map((item) => {
-        if (item.id === listItem.id) {
+        if (item.id === storeItem.id) {
           item.onList = !item.onList
         }
         return item;
       })
     })
-    firebase.database().ref('items/' + listItem.id).update(listItem);
-  }
-
-  addToList(listItem) {
-    this.setState({
-      items: this.state.items.map((item) => {
-        if (item.id === listItem.id) {
-          item.onList = !item.onList
-        }
-        return item;
-      })
-    })
-    firebase.database().ref('items/' + listItem.id).update(listItem);
-  }
-
-  addToMeal(mealItem) {
-    this.setState({
-      items: this.state.items.map((item) => {
-        if (item.id === mealItem.id) {
-          item.onMeal = !item.onMeal
-        }
-        return item;
-      })
-    })
-    firebase.database().ref('items/' + mealItem.id).update(mealItem);
+    firebase.database().ref('items/' + storeItem.id).update(storeItem);
   }
 
   componentDidMount() {
@@ -114,13 +88,13 @@ export default class Main extends Component {
             <List
               user={this.props.user}
               items={this.state.items}
-              onList={(listItem) => this.addToList(listItem)}
+              onAdd={(storeItem) => this.addToList(storeItem)}
             />
             <AddItem user={this.props.user}/>
             <Store
               user={this.props.user}
               items={this.state.items}
-              onList={(listItem) => this.addToList(listItem)}
+              onAdd={(storeItem) => this.addToList(storeItem)}
               onDelete={(delItem) => this.deleteItem(delItem)}
               onEdit={(editItem) => this.editItem(editItem)}
             />
@@ -129,15 +103,17 @@ export default class Main extends Component {
             <Meal
               user={this.props.user}
               items={this.state.items}
-              onMeal={(mealItem) => this.addToMeal(mealItem)}
             />
             <Kitchen
               user={this.props.user}
               items={this.state.items}
-              onList={(listItem) => this.addToList(listItem)}
+              onAdd={(storeItem) => this.addToList(storeItem)}
               onDelete={(delItem) => this.deleteItem(delItem)}
               onEdit={(editItem) => this.editItem(editItem)}
             />
+          </Route>
+          <Route path='/test'>
+            <Test onAdd={(storeItem) => this.addToList(storeItem)}/>
           </Route>
           <Route path='/Edit/:id' exact component={EditStoreItem}/>
         </Router>

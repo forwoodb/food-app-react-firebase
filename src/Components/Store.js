@@ -1,30 +1,24 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {Link} from 'react-router-dom';
 
-export default class Store extends Component {
-  constructor() {
-    super();
-    this.state = {
-      storeItems: [],
+export default function Store(props) {
+  function compare(a,b) {
+    let comparison = 0;
+    if (a.item > b.item) {
+      comparison = 1;
+    } else if (a.item < b.item) {
+      comparison = -1;
     }
+    return comparison;
   }
 
-  render() {
-    function compare(a,b) {
-      let comparison = 0;
-      if (a.item > b.item) {
-        comparison = 1;
-      } else if (a.item < b.item) {
-        comparison = -1;
-      }
-      return comparison;
-    }
-
-    return (
-      <div>
-        <h1>Store</h1>
+  return (
+    <div>
+      <h1>Store</h1>
+      <table className="table">
+        <StoreHeader/>
           {
-            this.props.items.sort(compare).map((item) =>
+            props.items.sort(compare).map((item) =>
               <StoreItem
                 key={item.id}
                 id={item.id}
@@ -34,65 +28,81 @@ export default class Store extends Component {
                 brand={item.brand}
                 location={item.location}
                 servings={item.servings}
-                onList={() => this.props.onList(item)}
-                onDelete={() => this.props.onDelete(item)}
-                onEdit={() => this.props.onEdit(item)}
+                onList={item.onList}
+                onAdd={() => props.onAdd(item)}
+                onDelete={() => props.onDelete(item)}
+                onEdit={() => props.onEdit(item)}
               />
             )
           }
-      </div>
-    );
-  }
+      </table>
+    </div>
+  );
+}
+
+function StoreHeader() {
+  return (
+    <thead>
+      <tr>
+        <td className="text-right"></td>
+        <td className="text-right">Item</td>
+        <td className="text-right">Brand</td>
+        <td className="text-right">Price</td>
+        <td className="text-right">Location</td>
+        <td className="text-right">Price Type</td>
+        <td className="text-right">Servings</td>
+        <td className="text-right"></td>
+        <td className="text-right"></td>
+      </tr>
+    </thead>
+  );
 }
 
 function StoreItem(props) {
+  return (
+    <tbody>
+      <tr key={props.id}>
+        <td className="text-left">
+          <Button onList={props.onList} onAdd={props.onAdd}/>
+        </td>
+        <td className="text-left">{props.item}</td>
+        <td className="text-left">{props.brand}</td>
+        <td className="text-left">{props.price}</td>
+        <td className="text-left">{props.location}</td>
+        <td className="text-left">{props.priceType}</td>
+        <td className="text-left">{props.servings}</td>
+        <td className="text-left">
+          <Link to={'/Edit/' + props.id}>
+            <button type="button" className="btn btn-primary">
+              Edit Item
+            </button>
+          </Link>
+        </td>
+        <td className="text-left">
+          <button className="btn btn-danger" onClick={props.onDelete}>
+            Delete Item
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  );
+}
 
-    return (
-      <div className="card text-center" key={props.id}>
-        <div className="card-body">
-          <h4 className="card-title">{props.item}</h4>
-          <table className="table">
-            <tbody>
-              <tr>
-                <td className="text-right">Brand:</td>
-                <td className="text-left">{props.brand}</td>
-                <td className="text-right">Price:</td>
-                <td className="text-left">{props.price}</td>
-              </tr>
-              <tr>
-                <td className="text-right">Location:</td>
-                <td className="text-left">{props.location}</td>
-                <td className="text-right">Price Type:</td>
-                <td className="text-left">{props.priceType}</td>
-              </tr>
-              <tr>
-                <td className="text-right">Servings:</td>
-                <td className="text-left">{props.servings}</td>
-                <td></td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
-          <div className="row">
-            <div className="col text-left">
-              <button className="btn btn-success" onClick={props.onList}>
-                Add to List
-              </button>
-            </div>
-            <div className="col text-center">
-              <Link to={'/Edit/' + props.id}>
-              <button type="button" className="btn btn-primary">
-                Edit Item
-              </button>
-              </Link>
-            </div>
-            <div className="col text-right">
-              <button className="btn btn-danger" onClick={props.onDelete}>
-                Delete Item
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+function Button(props) {
+  let button;
+  let style;
+
+  if (props.onList) {
+    button = "Rem"
+    style = "warning"
+  } else {
+    button = "Add"
+    style = "success"
+  }
+
+  return (
+    <button className={`btn btn-${style}`} onClick={props.onAdd}>
+      {button}
+    </button>
+  );
 }
