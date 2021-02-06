@@ -41,16 +41,17 @@ export default class List extends Component {
   }
 }
 
-class ListItem extends Component {
-  render() {
-    return (
-      <tr>
-        <td>{this.props.item}</td>
-        <td>{this.props.price}</td>
-        <td>{this.props.brand}</td>
-        <td><button className="btn btn-success" onClick={this.props.onList}>Add to Kitchen</button></td>
-        <td><button className="btn btn-danger" onClick={this.props.onAdd}>Delete</button></td>
-      </tr>
-    );
-  }
+function ListItem(props) {
+  return (
+    <tr>
+      <td>{props.item}</td>
+      <td>{props.price}</td>
+      <td>{props.brand}</td>
+      <td>{props.location}</td>
+      <td>{props.priceType}</td>
+      <td>{props.servings}</td>
+      <td><button className="btn btn-success" onClick={props.onList}>Add to Kitchen</button></td>
+      <td><button className="btn btn-danger" onClick={props.onAdd}>Delete</button></td>
+    </tr>
+  );
 }
