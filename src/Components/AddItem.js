@@ -35,30 +35,30 @@ export default class AddItem extends Component {
       <div className="mt-5 mb-5">
         <h1>Add Item</h1>
         <form className="row g-3" onSubmit={this.handleSubmit}>
-          <div>
+          <div className="input-group-sm">
             <input className="form-control" name="itemText" placeholder="Item"/>
           </div>
-          <div className="col-4">
+          <div className="col-4 input-group-sm">
             <input className="form-control" name="price" placeholder="Price"/>
           </div>
-          <div className="col-4">
+          <div className="col-4 input-group-sm">
             <select className="form-control" name="priceType">
               <option>Regular</option>
               <option>Sale</option>
               <option>Coupon</option>
             </select>
           </div>
-          <div className="col-4">
+          <div className="col-4 input-group-sm">
             <input className="form-control" name="servings" placeholder="Servings"/>
           </div>
-          <div className="col-6">
+          <div className="col-6 input-group-sm">
             <input className="form-control" name="brand" placeholder="Brand"/>
           </div>
-          <div className="col-6">
+          <div className="col-6 input-group-sm">
             <input className="form-control" name="location" placeholder="Location"/>
           </div>
           <div className="d-grid d-sm-block">
-            <button className="btn btn-success">Add To Store</button>
+            <button className="btn btn-success btn-sm">Add To Store</button>
           </div>
         </form>
       </div>
