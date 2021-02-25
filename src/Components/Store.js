@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 
-export default function Store(props) {
+function Store(props) {
   function compare(a,b) {
     let comparison = 0;
     if (a.item > b.item) {
@@ -24,7 +24,7 @@ export default function Store(props) {
                 key={item.id}
                 id={item.id}
                 item={item.item}
-                price={item.price}
+                price={Number(item.price).toFixed(2)}
                 priceType={item.priceType}
                 brand={item.brand}
                 location={item.location}
@@ -108,3 +108,5 @@ function Button(props) {
     </button>
   );
 }
+
+export default Store;

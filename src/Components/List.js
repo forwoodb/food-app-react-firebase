@@ -9,7 +9,7 @@ const List = (props) => {
           key={i}
           id={item.id}
           item={item.item}
-          price={item.price}
+          price={Number(item.price).toFixed(2)}
           priceType={item.priceType}
           brand={item.brand}
           location={item.location}
@@ -61,24 +61,26 @@ const PriceTotal = (props) => {
 
   props.items.map((item) => {
     if (item.onList) {
+      console.log(item.item);
+      console.log(item.price);
       priceList.push(parseFloat(item.price));
     }
   })
-
+  console.log(priceList);
   let priceTotal;
 
   if (priceList.length > 0) {
-    priceList.reduce((total, price) => {
-      priceTotal =  total + price;
+    priceTotal = priceList.reduce((total, price) => {
+      return total + Number(price);
     })
+    console.log(priceTotal);
   }
 
-  console.log(priceTotal);
 
   return (
     <tr>
       <td><strong>Total:</strong></td>
-      <td><strong>{priceTotal}</strong></td>
+      <td><strong>{Number(priceTotal).toFixed(2)}</strong></td>
     </tr>
   );
 }

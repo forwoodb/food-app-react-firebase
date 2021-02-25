@@ -1,16 +1,12 @@
 import React, {Component} from 'react';
 import firebase from '../firebase.js';
 
-export default class AddItem extends Component {
-  constructor() {
-    super();
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+const AddItem = (props) => {
 
-  handleSubmit(e) {
+  const handleSubmit = (e) => {
     e.preventDefault();
     const newItem = {
-      user: this.props.user ? this.props.user : 'Demo',
+      user: props.user ? props.user : 'Demo',
       item: e.target.itemText.value,
       price: e.target.price.value,
       priceType: e.target.priceType.value,
@@ -30,11 +26,10 @@ export default class AddItem extends Component {
     // window.location = '/';
   }
 
-  render() {
     return (
       <div className="mt-5 mb-5">
         <h1>Add Item</h1>
-        <form className="row g-3" onSubmit={this.handleSubmit}>
+        <form className="row g-3" onSubmit={handleSubmit}>
           <div className="input-group-sm">
             <input className="form-control" name="itemText" placeholder="Item"/>
           </div>
@@ -63,5 +58,6 @@ export default class AddItem extends Component {
         </form>
       </div>
     );
-  }
 }
+
+export default AddItem;

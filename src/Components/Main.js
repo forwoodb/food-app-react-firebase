@@ -20,18 +20,6 @@ export default class Main extends Component {
     }
   }
 
-  addToList(storeItem) {
-    this.setState({
-      items: this.state.items.map((item) => {
-        if (item.id === storeItem.id) {
-          item.onList = !item.onList
-        }
-        return item;
-      })
-    })
-    firebase.database().ref('items/' + storeItem.id).update(storeItem);
-  }
-
   componentDidMount() {
     firebase.database().ref('items').on('value', (snapshot) => {
       let data = snapshot.val();
@@ -57,6 +45,18 @@ export default class Main extends Component {
         items,
       })
     });
+  }
+
+  addToList(storeItem) {
+    this.setState({
+      items: this.state.items.map((item) => {
+        if (item.id === storeItem.id) {
+          item.onList = !item.onList
+        }
+        return item;
+      })
+    })
+    firebase.database().ref('items/' + storeItem.id).update(storeItem);
   }
 
   deleteItem(delItem) {
